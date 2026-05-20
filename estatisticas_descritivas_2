@@ -1,0 +1,50 @@
+# 📊 Benchmarking de Eficiência Hospitalar: Análise de Tempo de Espera na Classificação de Risco
+
+Este projeto apresenta uma **Análise Estatística Bivariada e Comparativa** do tempo médio de espera (em minutos) para o primeiro atendimento na classificação de risco (Protocolo de Manchester). O estudo confronta o desempenho operacional de duas instituições fictícias ao longo de uma amostragem contínua de 30 dias: o **Hospital Florence** e o **Hospital Ana Nery**.
+
+O objetivo é aplicar medidas de posição, dispersão e correlação linear para diagnosticar gargalos de atendimento, identificar padrões de sobrecarga e fornecer subsídios matemáticos para a auditoria de processos assistenciais.
+
+---
+
+## 📋 Cenário de Negócio e Definição das Variáveis
+
+Na gestão e auditoria de sistemas de saúde, o tempo na classificação de risco é um indicador crítico de qualidade e segurança do paciente. O dataset deste projeto analisa duas **variáveis contínuas**:
+
+1. **Variável $X$ (Tempo Médio - Hospital Florence):** Média diária de espera (em minutos) na triagem da unidade Florence.
+2. **Variável $Y$ (Tempo Médio - Hospital Ana Nery):** Média diária de espera (em minutos) na triagem da unidade Ana Nery.
+
+---
+
+## 🔍 Metodologia Estatística e Indicadores Calculados
+
+Para extrair inteligência dos 30 dias de amostragem, a análise foi estruturada em três frentes principais:
+
+### 1. Medidas de Posição (Tendência Central)
+* **Média Geral:** O **Hospital Ana Nery** mostrou-se mais ágil na linha de base, com uma média de **13,1 minutos** de espera, enquanto o **Hospital Florence** registou uma média superior, de **16,4 minutos**.
+* **Mediana e Quartis (Q1, Q2, Q3):** Utilizados para mapear a distribuição dos tempos e entender o comportamento do fluxo nos dias de movimento padrão, identificando a assimetria das curvas de atendimento.
+
+### 2. Análise de Dispersão e Volatilidade Operational
+A análise da média isolada pode mascarar instabilidades. Por isso, foram aplicados indicadores avançados de dispersão:
+* **Desvio Padrão e Variância:** O Hospital Florence apresentou maior volatilidade ($DP = 6,03\text{ min}$), indicando que os pacientes enfrentam uma previsibilidade menor no tempo de espera dependendo do dia. O Hospital Ana Nery demonstrou maior consistência e controle de processos ($DP = 3,91\text{ min}$).
+* **Erro Padrão:** Mensura a precisão da média amostral em relação à população real.
+* **Coeficiente de Variação (CV):** O indicador definitivo de estabilidade. O Hospital Florence opera com um **CV de 37%** (maior dispersão e instabilidade), enquanto o Hospital Ana Nery mantém **30%**, comprovando processos de triagem mais homogêneos.
+
+### 3. Análise de Correlação Linear
+* **Coeficiente de Correlação ($r = -0,2995$):** O cálculo revelou uma correlação linear negativa moderada/fraca entre os tempos de espera das duas instituições. 
+* **Gráfico de Dispersão (*Scatter Plot*):** A plotagem dos pontos com a linha de tendência confirma visualmente que variações sazonais, fatores macro de saúde no município ou a flutuação da demanda impactam as unidades de formas distintas, abrindo espaço para estudos de redistribuição de fluxo de pacientes na rede de urgências.
+
+---
+
+## 🎯 Tomada de Decisão Estratégica (Auditoria e Gestão)
+
+Os resultados estatísticos deste benchmarking direcionam ações cirúrgicas para a liderança e auditoria de saúde:
+
+* **Padronização de Processos (Benchmarking Inter-hospitalar):** O Hospital Ana Nery deve ser utilizado como modelo de *boas práticas* de triagem. A auditoria deve mapear o dimensionamento da equipa de enfermagem e o layout de fluxo do Ana Nery para replicar o modelo no Hospital Florence, visando reduzir o seu CV de 37% para patamares mais seguros.
+* **Previsibilidade e Dimensionamento (FinOps Hospitalar):** Compreender o desvio padrão diário permite que os gestores calculem a capacidade ociosa e a necessidade de escalas móveis (plantões de reforço) para os dias em que a variabilidade atinge o terceiro quartil, evitando desperdício de recursos financeiros e sobrecarga das equipas de saúde.
+
+---
+_Análise bivariada desenvolvida como projeto prático de aplicação de medidas de posição e correlação para o módulo de Data Science e Health Analytics._
+
+
+### 📈 Gráfico de Dispersão & Linha de Tendência
+![Análise de Dispersão e Correlação](analise_dispersao.png)
