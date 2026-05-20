@@ -1,0 +1,46 @@
+# 🏥 Análise Amostral Exploratória: Frequência de Atendimentos na UBS Bernoulli
+
+Este repositório apresenta o desenvolvimento de uma **Análise Exploratória de Dados (EDA)** baseada em uma amostra contínua de 50 pacientes acompanhados ao longo de um período fictício de 1 ano na **UBS Bernoulli**. 
+
+O objetivo do projeto é estruturar dados brutos de sistemas de saúde para identificar padrões de comportamento no uso do serviço, fornecendo subsídios estatísticos para a otimização de escalas de enfermagem, gerenciamento de filas e busca ativa de pacientes crônicos.
+
+---
+
+## 📋 Arquitetura e Engenharia dos Dados
+
+Para transformar os registros brutos em um relatório acionável, o pipeline de trabalho seguiu as seguintes premissas técnicas:
+
+1. **Estruturação da Amostra:** Identificação unívoca via variável `Id_paciente` associada à variável contínua discreta `Visitas a UBS`.
+2. **Sanitização e Ordenação:** Aplicação de algoritmos de ordenação crescente (Sorting) para mapear a amplitude total dos dados, que variam de um mínimo de **3 atendimentos** até um pico de **126 atendimentos** por indivíduo no ano.
+3. **Agrupamento em Classes:** Criação de 6 faixas intervalares simétricas (com amplitude de 20 atendimentos por classe) para categorizar o nível de recorrência dos usuários:
+   * `0 - 20` | `21 - 40` | `41 - 60` | `61 - 80` | `81 - 100` | `101 - 126`
+
+---
+
+## 🔍 Modelagem Estatística Aplicada
+
+A tabela de distribuição de frequências foi construída para responder a perguntas de negócio imediatas por meio de três pilares:
+
+### 📊 Frequência Absoluta ($f_i$)
+* Determina o volume real de pacientes retidos em cada faixa. 
+* *Insight imediato:* A maior concentração de usuários está na base da pirâmide (12 pacientes com até 20 visitas) e no meio (11 pacientes entre 41 e 60 visitas).
+
+### 📈 Frequência Relativa ($f_r$)
+* Percentual representativo de cada grupo em relação ao todo ($n=50$).
+* Essencial para normalizar os dados e apresentar o diagnóstico em formato de KPIs para instâncias superiores e secretarias de saúde.
+
+### ⏱️ Frequências Acumuladas (Absoluta e Relativa)
+* Permitem uma leitura de corte cirúrgica para tomadas de decisão rápidas:
+* *Diagnóstico Crítico:* **64% da amostra** (Frequência Relativa Acumulada) realiza até 60 atendimentos no ano. Em contrapartida, há um grupo de **20% de hiperfrequentadores** que utilizam o serviço de forma extrema (mais de 100 visitas ao ano).
+
+---
+
+## 🎯 Tomada de Decisão baseada em Dados (Data-Driven Health)
+
+A partir da visualização gerada pelo histograma de distribuição da UBS Bernoulli, a governança em saúde consegue atuar de forma preditiva e estratégica:
+
+* **Gerenciamento de Gargalos:** Usuários com mais de 100 visitas ao ano geram forte impacto na ocupação das agendas diárias. A análise indica a necessidade de auditoria nesses prontuários para entender se o caso exige encaminhamento para especialidades ou programas de assistência domiciliar.
+* **Planejamento de Insumos e Escalas:** Identificar que a maioria esmagadora flutua abaixo de 60 atendimentos ajuda a dimensionar o tempo de consulta padrão na triagem e a distribuição de insumos básicos na unidade.
+
+---
+_Módulo de Análise Descritiva desenvolvido como aplicação prática de fundamentos estatísticos aplicados a Analytics e Data Science._
