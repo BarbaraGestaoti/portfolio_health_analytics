@@ -1,0 +1,60 @@
+# Guia Prático de Distribuições de Probabilidade Aplicadas à Saúde 📊🏥
+
+Este documento detalha os fundamentos conceituais, cenários de aplicação e a lógica de negócios por trás das três principais distribuições discretas de probabilidade utilizadas no monitoramento em saúde e vigilância epidemiológica.
+
+---
+
+## 1. Distribuição Binomial: Amostragem com Tamanho Fixo ($n$)
+
+Na amostragem binomial, o tamanho do seu esforço amostral é predeterminado antes da coleta começar. Você quer descobrir quantos eventos acontecem dentro de um limite fixo.
+
+* **O Cenário:** Você possui uma população de tamanho definido ou com reposição, onde cada indivíduo tem apenas duas possibilidades: apresentar ou não a característica (sucesso ou fracasso).
+* **Parâmetros Fundamentais:**
+  * $n$: Número total de tentativas/elementos amostrados (Fixo).
+  * $p$: Probabilidade constante do evento acontecer a cada tentativa.
+  * $X$: O número de sucessos observados (Variável).
+
+### 🏥 Aplicação na Saúde: Metas de Triagem
+* **Exemplo Prático:** Uma diretriz epidemiológica aponta que **3%** da população geral é composta por sintomáticos respiratórios. Ao triar um grupo fixo de **1.000 pessoas** na Atenção Básica, a distribuição Binomial modela a probabilidade de encontrarmos exatamente 30, mais de 45 ou menos de 15 pessoas sintomáticas.
+* **Uso no Analytics:** Serve para calibrar expectativas de capacidade de atendimento das equipes e criar indicadores de cobertura vacinal ou prevalência de sintomas.
+
+---
+
+## 2. Distribuição Binomial Negativa: Amostragem Baseada em Metas ($k$)
+
+Na amostragem binomial negativa, a lógica se inverte. Você não sabe quantos elementos vai precisar analisar no total; você continua coletando dados até atingir uma meta de eventos de interesse.
+
+* **O Cenário:** É a base da *Amostragem Inversa*. Muito utilizada para investigar eventos raros, onde uma amostra de tamanho fixo comum correria o risco de terminar sem nenhum dado relevante para análise.
+* **Parâmetros Fundamentais:**
+  * $k$ (ou $r$): O número mínimo de sucessos/casos desejados (Fixo).
+  * $p$: Probabilidade do evento acontecer em cada tentativa.
+  * $Y$: O número total de tentativas que serão necessárias até atingir a meta (Variável).
+
+### 🏥 Aplicação na Saúde: Investigação de Eventos Raros e Gestão de Risco
+* **Exemplo Prático:** Você precisa de **30 prontuários** de pacientes com uma reação adversa raríssima a um medicamento para modelar o perfil clínico deles. Em vez de abrir 1.000 prontuários aleatórios (e correr o risco de achar apenas 1 caso), a equipe faz uma busca ativa contínua. O processo só para quando o 30º caso for encontrado.
+* **Uso no Analytics:** Permite **mensurar a probabilidade de não encontrar o volume mínimo necessário ($k$) de casos** dentro de um limite de orçamento ou esforço da equipe, mitigando o risco de um projeto de pesquisa terminar de mãos vazias.
+
+---
+
+## 3. Distribuição de Poisson: Eventos Flutuantes em Espaço Contínuo
+
+Diferente das anteriores, na distribuição de Poisson as tentativas não são discretas (isoladas). Ela modela a ocorrência de eventos em um intervalo contínuo de **tempo, espaço ou área**.
+
+* **O Cenário:** Não faz sentido contar o número de "tentativas que falharam". Você apenas conta quantas vezes o evento aconteceu dentro de uma janela contínua (ex: um mês, uma região de 20 km²).
+* **Parâmetros Fundamentais:**
+  * $\lambda$ (Lambda): A taxa média de ocorrência do evento por unidade de tempo/espaço (Fixo).
+  * $k$: O número exato de ocorrências que você quer calcular (Variável).
+
+### 🏥 Aplicação na Saúde: Monitoramento Epidemiológico e Detecção de Surtos
+* **Exemplo Prático:** Um município de 200.000 habitantes tem uma média histórica de **240 casos de Tuberculose por ano**, o que equivale a uma taxa média de **20 casos por mês** ($\lambda = 20$). Se em um mês específico surgirem **35 notificações**, a Vigilância Epidemiológica usa a Poisson para calcular a probabilidade desse pico ser apenas uma oscilação natural do acaso ou o indicativo real de um surto.
+* **Uso no Analytics:** Indispensável para prever demandas de leitos em UTIs, dimensionar estoques de insumos farmacêuticos em crises e disparar alertas rápidos de desvios sanitários.
+
+---
+
+## 🔄 Resumo Comparativo para Tomada de Decisão
+
+| Distribuição | O que está Fixo? | O que está Variando? | Unidade de Medida | Pergunta Essencial |
+| :--- | :--- | :--- | :--- | :--- |
+| **Binomial** | Tamanho da amostra ($n$) | Qtd de casos encontrados ($X$) | Tentativas isoladas | *"Em 100 exames, quantos darão positivo?"* |
+| **Binomial Negativa** | Meta de casos desejados ($k$) | Esforço/Tamanho total necessário | Tentativas isoladas | *"Quantos prontuários vou ter que ler até achar 30 casos?"* |
+| **Poisson** | Taxa média histórica ($\lambda$) | Qtd de casos no período ($k$) | Intervalo (Tempo/Espaço) | *"Qual a chance de termos 15 infecções nesta UTI este mês?"* |
