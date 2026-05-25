@@ -1,0 +1,55 @@
+# 🏥 Análise de Eficiência Operacional em Unidades de Saúde via Coeficiente de Variação
+
+Este projeto prático foi desenvolvido para aplicar os conceitos de **estatística descritiva** e **medidas de dispersão relativa** abordados no MBA em Data Science & Analytics, utilizando cenários reais da gestão de saúde pública e vigilância sanitária.
+
+---
+
+## 📊 O Conceito Teórico: Coeficiente de Variação (CV)
+O Desvio Padrão ($S$) mede a dispersão absoluta dos dados. Quando comparamos grupos com médias muito distantes, o Desvio Padrão pode distorcer o diagnóstico. O **Coeficiente de Variação (CV)** resolve essa limitação ao relativizar o desvio padrão em função da média amostral ($\bar{X}$).
+
+$$CV = \left( \frac{S}{\bar{X}} \right) \times 100 \ (\%)$$
+
+---
+
+## 🏥 Cenário Analisado: Tempo de Espera em UPAs
+
+Foram coletadas 10 amostras de tempos de atendimento (em minutos) para duas unidades com perfis operacionais distintos:
+
+* **UPA A (Fluxo Rápido / Alta Volatilidade):** Média = 20 min | Desvio Padrão = 4.57 min
+* **UPA B (Fluxo Lento / Baixa Volatilidade):** Média = 120 min | Desvio Padrão = 13.71 min
+
+### 💻 Implementação em Python
+O script utiliza a biblioteca `pandas` para a manipulação dos dados estruturados e `seaborn` / `matplotlib` para a geração de gráficos de alto impacto visual (*Data Visualization*).
+
+```python
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+# Dataset estruturado
+dados = {
+    'Unidade': ['UPA A']*10 + ['UPA B']*10,
+    'Tempo_Espera': [20, 25, 15, 22, 18, 27, 13, 20, 24, 16,
+                     120, 135, 105, 126, 114, 141, 99, 120, 132, 108]
+}
+df = pd.DataFrame(dados)
+
+# Agrupamento e Métricas
+resumo = df.groupby('Unidade').agg(
+    Media=('Tempo_Espera', 'mean'),
+    Desvio_Padrao=('Tempo_Espera', 'std')
+).reset_index()
+
+# Cálculo do CV %
+resumo['CV_%'] = (resumo['Desvio_Padrao'] / resumo['Media']) * 100
+```
+
+---
+
+## 💡 Insights Obtidos
+
+* **Resultado do CV:** A **UPA A** apresentou um CV de **22.85%**, enquanto a **UPA B** obteve **11.43%**.
+* **Diagnóstico de Negócio:** Apesar do tempo de espera absoluto na UPA B ser superior, **seu processo é duas vezes mais estável e previsível** que o da UPA A. Os dados da UPA A revelam uma operação mais volátil e dispersa em torno de sua média central.
+
+---
+*Repositório mantido como portfólio de estudos e aplicação prática em Ciência de Dados na Saúde.*
