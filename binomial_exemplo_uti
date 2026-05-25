@@ -1,0 +1,47 @@
+# 🏥 Modelagem de Risco Epidemiológico em UTIs via Distribuição Binomial
+
+Este projeto aplica conceitos de **Probabilidade Binomial** utilizando o Python (`scipy.stats`) para prever e mitigar riscos assistenciais de Infecções Relacionadas à Assistência à Saúde (IRAS) em ambientes de terapia intensa.
+
+---
+
+## 📊 Cenário Analisado (Visão da Vigilância Sanitária)
+Em uma UTI com **30 leitos ocupados**, onde a taxa histórica de infecção por microrganismos multirresistentes é de **7,45%**, foram desenhados dois cenários de investigação operacional:
+
+1. **Cenário de Alerta Fixo:** Qual a probabilidade de encontrar exatamente 3 pacientes infectados simultaneamente?
+2. **Cenário de Limite Crítico (Capacidade de Resposta):** Qual a probabilidade de a unidade operar com até 5 pacientes infectados?
+
+---
+
+## 💻 Implementação e Resultados no Python
+
+```python
+from scipy.stats import binom
+
+# Parâmetros Basais
+leitos = 30
+taxa_infeccao = 0.0745
+
+# 1. Probabilidade Exata (PMF) - Alvo: 3 pacientes
+prob_exata = binom.pmf(3, leitos, taxa_infeccao)
+print(f"Probabilidade exata de 3 pacientes: {prob_exata * 100:.2f}%")
+# Resultado: 20.70%
+
+# 2. Probabilidade Acumulada (CDF) - Alvo: Até 5 pacientes
+prob_acumulada = binom.cdf(5, leitos, taxa_infeccao)
+print(f"Probabilidade acumulada de até 5 pacientes: {prob_acumulada * 100:.2f}%")
+# Resultado: 97.81%
+```
+
+---
+
+## 🩺 Parecer Técnico & Expertise de Negócio
+
+A análise estatística fria indica uma chance de **97,81%** de operarmos dentro do limite de até 5 pacientes. No entanto, sob a óptica da Vigilância Sanitária e do Controle de Infecção Hospitalar (CCIH), este cenário esconde um risco invisível:
+
+* **Quebra de Independência:** No ambiente de assistência, os microrganismos não se movem ao acaso. A transmissão ocorre de forma vetorial ativa através das mãos dos profissionais de saúde e de fômites (equipamentos, bancadas, prontuários).
+* **Risco de Surto Coletivo:** Uma probabilidade alta (20,70%) de termos exatamente 3 pacientes infectados sinaliza uma pressão seletiva constante. Se a adesão à higienização das mãos falhar, a taxa basal de 7,45% perde o controle rapidamente, deslocando a curva para um surto de cepas bacterianas com alta resistência a antibióticos.
+
+### 🛑 Plano de Intervenção Proposto:
+1. Auditoria imediata dos **5 momentos de higienização das mãos** (padrão OMS).
+2. Intensificação dos protocolos de **desinfecção de superfícies de alto toque** (fômites).
+3. Monitoramento contínuo junto à CCIH para detecção precoce de quebras de barreira sanitária.
