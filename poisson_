@@ -1,0 +1,50 @@
+# 📊 Modelagem de Dados de Contagem na Saúde: Poisson vs. Binomial Negativa
+
+Este módulo contém o estudo conceitual e as implementações práticas em Python para a análise e modelagem de dados de contagem, aplicando conceitos estatísticos diretamente em cenários reais de saúde pública e gestão hospitalar.
+
+---
+
+## 📌 Os Quatro Pilares Inegociáveis da Distribuição de Poisson
+
+Para que a Distribuição de Poisson seja aplicada de forma estatisticamente válida, a nossa variável de contagem deve atender rigorosamente a quatro critérios:
+
+1. **Tempo e Espaço (Intervalo Contínuo):** O evento deve estar contido em uma janela contínua bem delimitada (ex: infecções por *semana*, denúncias por *mês*).
+2. **Dados Históricos ($\lambda$):** É mandatório possuir uma base prévia estável para extrair a taxa média esperada de ocorrência.
+3. **Eventos Constantes (Estabilidade):** A taxa média não pode sofrer com oscilações extremas ou sazonalidades agressivas.
+4. **Independentes (Sem efeito dominó):** A ocorrência de um evento não pode influenciar, puxar ou impedir a ocorrência do próximo.
+
+---
+
+## 🏥 Estudo de Caso 1: O Cenário da Estabilidade (Poisson)
+
+**📋 Cenário:** Monitoramento de Infecções do Trato Urinário (ITU) em uma Unidade de Terapia Intensiva (UTI) ao longo de uma semana.
+
+* **Por que funciona?** A janela é fixa (1 semana na UTI), a rotina do setor é constante (mesmo número de leitos e protocolos) e os eventos são independentes (o fato de um paciente contrair ITU por critérios individuais não aumenta a chance do paciente do leito ao lado ter a infecção).
+
+### 🐍 Implementação em Python (Cálculo e Visualização)
+
+```python
+import numpy as np
+import scipy.stats as stats
+import matplotlib.pyplot as plt
+
+# 1. Definição dos parâmetros históricos (Média λ = 2)
+lambda_uti = 2
+cenarios_k = np.arange(0, 9) # Avaliando o cenário de 0 a 8 infecções na semana
+
+# 2. Cálculo da Função de Massa de Probabilidade (PMF)
+probabilidades = stats.poisson.pmf(cenarios_k, lambda_uti)
+
+print("Cenário de Probabilidades na UTI:")
+for k, prob in zip(cenarios_k, probabilidades):
+    print(f" {k} infecções na semana: {prob * 100:.2f}%")
+
+# 3. Plotagem do Gráfico de Distribuição
+plt.figure(figsize=(8, 4))
+plt.bar(cenarios_k, probabilidades, color='#2ca02c', edgecolor='black', alpha=0.75)
+plt.title('Distribuição de Poisson: Probabilidade de ITUs na Semana ($\lambda$ = 2)', fontsize=12, pad=15)
+plt.xlabel('Número de Infecções por Semana (k)', fontsize=10)
+plt.ylabel('Probabilidade Exata', fontsize=10)
+plt.xticks(cenarios_k)
+plt.grid(axis='y', linestyle='--', alpha=0.5)
+plt.show()
