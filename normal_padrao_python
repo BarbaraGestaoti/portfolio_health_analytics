@@ -1,0 +1,46 @@
+# 📈 A Distribuição Normal: Da Triagem Clínica às Finanças
+
+Este módulo contém estudos conceituais e implementações práticas em Python para a **Distribuição Normal** (ou Gaussiana), a principal distribuição para modelagem de variáveis contínuas (medidas que assumem valores decimais dentro de um intervalo).
+
+O objetivo é demonstrar como a mesma estrutura matemática da curva de sino se aplica perfeitamente para prever riscos tanto na área da **Saúde (Hipertensão)** quanto na área de **Finanças (Retorno de Ações)**.
+
+---
+
+## 📌 O Conceito: A Curva de Sino e a Regra Empírica
+
+A Distribuição Normal é perfeitamente simétrica em torno de sua **Média ($\mu$)**. O grau de espalhamento ou achatamento dessa curva é definido pelo seu **Desvio Padrão ($\sigma$)**.
+
+
+
+A população distribui-se sob a curva seguindo a **Regra 68-95-99.7**:
+* **68.27%** dos dados estão dentro de $\pm$ 1 Desvio Padrão da média.
+* **95.45%** dos dados estão dentro de $\pm$ 2 Desvios Padrão da média.
+* **99.73%** dos dados estão dentro de $\pm$ 3 Desvios Padrão da média.
+
+---
+
+## 🏥 Estudo de Caso 1: Triagem Cardiovascular na Saúde (Hipertensão)
+
+**📋 Cenário:** Uma enfermeira na *UBS Vila Normal Padrão* analisa a Pressão Arterial Sistólica (PAS) de uma população de controle. Os dados históricos indicam uma **Média ($\mu$) de 120 mmHg** e um **Desvio Padrão ($\sigma$) de 12 mmHg**. O objetivo é descobrir a probabilidade de um paciente aleatório apresentar PAS **maior ou igual a 130 mmHg** (limiar de alerta).
+
+### ⚙️ Lógica de Implementação (Cauda Superior)
+Por padrão, a Função de Distribuição Acumulada (`stats.norm.cdf`) calcula a probabilidade de um valor ser *menor ou igual* a $X$ (cauda esquerda). Para encontrar a probabilidade de ser *maior*, calculamos o complementar da área total: 
+
+$$\text{Probabilidade } (X \ge 130) = 1 - \text{CDF}(130)$$
+
+### 🐍 Código em Python
+
+```python
+import scipy.stats as stats
+
+# Parâmetros coletados na UBS Vila Normal Padrão
+media_pas = 120
+desvio_padrao = 12
+valor_limite = 130
+
+# Cálculo da probabilidade usando o complementar (1 - CDF)
+prob_hipertensao = 1 - stats.norm.cdf(valor_limite, loc=media_pas, scale=desvio_padrao)
+
+print(f'Probabilidade do paciente ter PAS maior ou igual a {valor_limite} mmHg:')
+print(f'{prob_hipertensao * 100:.2f}%')
+# Resultado esperado: 20.23%
