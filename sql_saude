@@ -1,0 +1,72 @@
+### 1. Consulta Básica com Filtros e Ordenação
+```sql
+SELECT 
+  coluna_medico, 
+  coluna_especialidade, 
+  coluna_data
+FROM 
+  tabela_atendimentos
+WHERE 
+  coluna_especialidade = 'Pediatria'
+  AND coluna_data >= '2026-01-01'
+  AND coluna_status IS NOT NULL
+ORDER BY 
+  coluna_data DESC;
+
+### 2. Criação de Colunas Calculadas (Regras de Negócio)
+SELECT 
+  coluna_1, 
+  coluna_2,
+  (coluna_3 / coluna_4) AS nova_coluna_calculada
+FROM 
+  projeto.dataset.tabela
+WHERE 
+  condicao_1 = 'Texto'
+  AND coluna_4 > 0; -- Proteção crucial contra divisão por zero
+
+### 3. Agregações e Visões Gerenciais (GROUP BY & HAVING)
+SELECT 
+  regiao_saude,
+  COUNT(id_paciente) AS total_pacientes,
+  SUM(custo_internacao) AS faturamento_total,
+  AVG(dias_internado) AS media_permanencia
+FROM 
+  tabela_hospitalar
+GROUP BY 
+  regiao_saude
+HAVING 
+  faturamento_total > 50000;
+
+
+### 4. Cruzamento de Dados entre Tabelas (INNER JOIN)
+SELECT 
+  atendimentos.id_atendimento,
+  pacientes.nome_paciente,
+  pacientes.idade,
+  atendimentos.diagnostico
+FROM 
+  tabela_atendimentos AS atendimentos
+INNER JOIN 
+  tabela_pacientes AS pacientes
+  ON atendimentos.id_paciente = pacientes.id_paciente;
+
+### 5. Classificação por Regras Negócio (CASE WHEN)
+SELECT 
+  nome_paciente,
+  idade,
+  CASE 
+    WHEN idade >= 60 THEN 'Idoso'
+    WHEN idade BETWEEN 18 AND 59 THEN 'Adulto'
+    ELSE 'Pediátrico'
+  END AS classificacao_etaria
+FROM 
+  tabela_pacientes;
+
+
+### 6. Tratamento de Dados Nulos (COALESCE)
+SELECT 
+  nome_paciente,
+  COALESCE(telefone, 'Não informado') AS contato,
+  COALESCE(valor_copagamento, 0) AS valor_pago
+FROM 
+  tabela_cadastro;
