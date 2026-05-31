@@ -1,0 +1,56 @@
+# Análise de Eficácia Assistencial: Teste t de Student com Python 🏥📊
+
+Este projeto apresenta a aplicação prática da estatística inferencial na gestão de saúde e assistência hospitalar. O objetivo é avaliar se um novo protocolo de curativos tecnológicos reduz significativamente o tempo de cicatrização de lesões por pressão em uma amostra reduzida de pacientes.
+
+## 🧠 Cenário de Negócio & Contexto Clínico
+
+Na gestão de saúde, raramente temos dados de toda a população de imediato. Quando testamos novas intervenções (como protocolos de triagem, medicamentos ou coberturas de curativos), trabalhamos com amostras pequenas. 
+
+Para evitar conclusões "otimistas demais" causadas pelo acaso, utilizamos a **Distribuição t de Student**. Por possuir caudas mais longas, ela assume uma maior tolerância ao erro e variabilidade, funcionando como uma margem de segurança para a tomada de decisão gerencial.
+
+* **Grupo A (Controle):** 12 pacientes utilizando o protocolo convencional.
+* **Grupo B (Teste):** 12 pacientes utilizando o novo curativo tecnológico.
+
+---
+
+## 💻 Código em Python
+
+O script abaixo realiza o carregamento dos dados simulados, executa o Teste t de Student para amostras independentes utilizando a biblioteca `SciPy`, e gera a visualização gráfica (*Boxplot*) com `Seaborn`.
+
+```python
+import numpy as np
+from scipy import stats
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# 1. Coleta dos dados (Tempo de cicatrização em dias)
+grupo_controle_A = [15, 14, 16, 15, 17, 13, 15, 16, 14, 15, 18, 14]
+grupo_teste_B = [11, 10, 13, 12, 10, 14, 11, 9, 12, 11, 13, 10]
+
+# 2. Cálculo das médias
+media_A = np.mean(grupo_controle_A)
+media_B = np.mean(grupo_teste_B)
+
+print(f"Média do Grupo A (Antigo): {media_A:.1f} dias")
+print(f"Média do Grupo B (Novo): {media_B:.1f} dias")
+print("-" * 50)
+
+# 3. Aplicação do Teste t de Student
+t_stat, p_valor = stats.ttest_ind(grupo_controle_A, grupo_teste_B)
+
+print(f"Estatística t calculada: {t_stat:.4f}")
+print(f"O P-valor é: {p_valor:.6f}")
+print("-" * 50)
+
+# 4. Interpretação do Negócio (Nível de significância de 5%)
+alpha = 0.05
+if p_valor < alpha:
+    print("✨ RESULTADO SIGNIFICATIVO! O novo protocolo realmente reduz o tempo.")
+else:
+    print("⚠️ RESULTADO NÃO SIGNIFICATIVO. Risco de flutuação ao acaso.")
+
+# 5. Geração do Gráfico Comparativo
+sns.boxplot(data=[grupo_controle_A, grupo_teste_B])
+plt.xticks([0, 1], ['Grupo A (Antigo)', 'Grupo B (Novo)'])
+plt.title('Comparação do Tempo de Cicatrização (Dias)')
+plt.show()
