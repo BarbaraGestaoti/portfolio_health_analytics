@@ -1,0 +1,77 @@
+# 📊 Resumo Executivo: Distribuição Qui-Quadrado ($\chi^2$) e Aplicações na Saúde
+
+Este documento apresenta um resumo conceitual da distribuição Qui-Quadrado e exemplos práticos de implementação utilizando SQL e Python para análise de dados na saúde.
+
+---
+
+## 🧠 1. O Conceito (O que é e para que serve?)
+
+A distribuição Qui-Quadrado ($\chi^2$) é uma ferramenta estatística utilizada para verificar a **associação ou independência entre duas variáveis categóricas** (dados que representam grupos, rótulos ou categorias, e não números contínuos).
+
+### Características Principais:
+* **Forma Curva:** O formato da curva é totalmente influenciado pelos **Graus de Liberdade (GL)**, que dependem do número de categorias que estamos comparando.
+* **Assimetria Positiva:** Para valores baixos de graus de liberdade, a curva é muito "torta" (assimétrica) para a esquerda, com uma cauda longa para a direita.
+* **Aproximação da Normal:** Conforme os graus de liberdade aumentam, a curva vai se espalhando, tornando-se mais simétrica e parecida com a Distribuição Normal.
+
+---
+
+## 🏥 2. Exemplos Práticos na Saúde
+
+1. **Vigilância Epidemiológica:** Verificar se o *Status de Vacinação* (Vacinado / Não Vacinado) está associado à *Taxa de Internação por SRAG* (Sim / Não).
+2. **Qualidade Hospitalar / Auditoria de Enfermagem:** Avaliar se a *Participação em Treinamento* (Fez o Treinamento / Não Fez) tem associação com o *Preenchimento Correto de Prontuários* (Correto / Com Erros).
+
+---
+
+## 🗄️ 3. Estrutura do Banco de Dados (SQL)
+
+Aqui está a modelagem para criar a tabela de histórico de atendimentos e simular os dados brutos:
+
+```sql
+-- Criando a tabela de atendimentos gripais
+CREATE TABLE tb_atendimentos_gripe (
+    id_paciente INT PRIMARY KEY,
+    status_vacina VARCHAR(20),  -- 'Vacinado' ou 'Não Vacinado'
+    internacao_srag VARCHAR(5)   -- 'Sim' ou 'Não'
+);
+
+-- Inserindo dados simulados para análise
+INSERT INTO tb_atendimentos_gripe (id_paciente, status_vacina, internacao_srag) VALUES
+(1, 'Vacinado', 'Não'), 
+(2, 'Vacinado', 'Não'), 
+(3, 'Vacinado', 'Sim'),
+(4, 'Não Vacinado', 'Sim'), 
+(5, 'Não Vacinado', 'Sim'), 
+(6, 'Não Vacinado', 'Não');
+
+
+
+```python
+-- Analisando qui_quadrado no Python
+
+import numpy as np
+import pandas as pd
+from scipy.stats import chi2_contingency
+
+# 1. Matriz de dados observados (Tabela de Contingência)
+# Linhas: Vacinado, Não Vacinado | Colunas: Não Internou, Internou
+dados_observados = np.array([[120, 10],   # Vacinados
+                             [110, 60]])  # Não Vacinados
+
+# Criando o DataFrame para exibição estruturada
+df_contingencia = pd.DataFrame(dados_observados,
+                               index=['vacinado', 'não vacinado'],
+                               columns=['não internou', 'internou'])
+
+print('--- Tabela de Dados Observados ---')
+print(df_contingencia)
+print('\n' + '=' * 40 + '\n')
+
+# 2. Executando o teste do Qui-Quadrado
+chi2_stat, p_valor, graus_liberdade, valores_esperados = chi2_contingency(dados_observados)
+
+# 3. Exibindo as métricas resultantes
+print(f'Estatística Qui-Quadrado : {chi2_stat:.4f}')
+print(f'Graus de Liberdade: {graus_liberdade}')
+print(f'P-Valor: {p_valor:.8f}')
+print('\n--- Valores Esperados (Se a vacina não fizesse diferença) ---')
+print(pd.DataFrame(valores_esperados, index=df_contingencia.index, columns=df_contingencia.columns))

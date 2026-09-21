@@ -1,0 +1,67 @@
+# Avaliação de Tempo de Dedicação Assistencial no PS utilizando Teste de Hipóteses (Python)
+
+## 📌 Visão Geral do Projeto
+Este projeto apresenta um estudo de caso focado na aplicação de Estatística Inferencial para a validação de processos e indicadores de qualidade na saúde. O objetivo é avaliar se a implementação de um novo modelo de Prontuário Eletrônico Orientado à Escuta Ativa aumentou de forma significativa o tempo médio que a equipe de enfermagem dedica ao paciente durante a triagem de média complexidade em um Pronto-Socorro (PS).
+
+> **Nota:** Os dados utilizados neste projeto são fictícios e foram estruturados e simulados via Pandas exclusivamente para fins didáticos e demonstração de conceitos de Estatística Inferencial.
+
+---
+
+## 🏥 O Problema de Negócio (Contexto Clínico)
+Na assistência médica e diagnóstica, a eficiência operacional deve caminhar lado a lado com a segurança e a humanização do atendimento. 
+* **Cenário Histórico:** O tempo médio padrão de dedicação do enfermeiro na primeira abordagem era de **15 minutos**.
+* **A Intervenção:** Implementação de um prontuário focado em guiar uma anamnese mais profunda e humanizada.
+* **A Pergunta de Dados:** O novo protocolo aumentou de forma real e consistente o tempo de dedicação à beira do leito, ou o aumento observado foi fruto de oscilações casuais do plantão?
+
+---
+
+## 📊 Metodologia Estatística e Código Python
+
+Para responder à pergunta com o devido rigor analítico, foi aplicado um **Teste t de Student para uma amostra (Caudal à Direita / Right-Tailed Test)**.
+
+* **Hipótese Nula ($H_0$):** $\mu \leq 15$ minutos (O novo sistema não aumentou o tempo de resposta/dedicação).
+* **Hipótese Alternativa ($H_1$):** $\mu > 15$ minutos (O tempo de atendimento aumentou significativamente — o que desejamos provar).
+* **Nível de Significância ($\alpha$):** $0.05$ ($5\%$).
+
+O teste foi executado utilizando o seguinte script em Python:
+
+```python
+import pandas as pd
+import scipy.stats as stats
+
+# 1. Banco de dados manual (Tempos de atendimento em minutos)
+dados_triagem = {
+    'id_atendimento': range(1, 31),
+    'tempo_atendimento_min': [
+        16, 18, 14, 17, 19, 15, 16, 20, 18, 17,
+        15, 16, 19, 18, 21, 14, 16, 17, 18, 19,
+        15, 16, 17, 18, 20, 16, 17, 15, 19, 18
+    ]
+}
+
+# Transformando o dicionário em um DataFrame do Pandas
+df_ps = pd.DataFrame(dados_triagem)
+
+# 2. Definindo os parâmetros do teste
+media_padrao = 15
+alpha = 0.05
+
+# 3. Executando o Teste t de uma amostra (Caudal à DIREITA: alternative='greater')
+stat_t, p_valor = stats.ttest_1samp(df_ps['tempo_atendimento_min'], popmean=media_padrao, alternative='greater')
+
+# 4. Exibindo os resultados analíticos no console
+print('--- RESULTADO DO ESTUDO DE CASO (CAUDA À DIREITA) ---')
+print(f'Total de atendimentos analisados: {len(df_ps)} pacientes')
+print(f'Média de tempo atual: {df_ps["tempo_atendimento_min"].mean():.2f} minutos')
+print(f'Desvio Padrão da amostra: {df_ps["tempo_atendimento_min"].std():.2f} minutos')
+print(f'Estatística t: {stat_t:.4f}')
+print(f'p-valor: {p_valor}')
+print('-' * 52)
+
+--- RESULTADO DO ESTUDO DE CASO (CAUDA À DIREITA) ---
+Total de atendimentos analisados: 30 pacientes
+Média de tempo atual: 17.13 minutos
+Desvio Padrão da amostra: 1.83 minutos
+Estatística t: 6.3804
+p-valor: 2.764516315222213e-07
+----------------------------------------------------
