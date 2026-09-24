@@ -198,3 +198,94 @@ dados_hospital.loc[mask, 'data_alta'] = temp_admissao
 dados_hospital['tempo_internacao_dias'] = (dados_hospital['data_alta'] - dados_hospital['data_admissao']).dt.days
 # %%
 
+import seaborn as sns
+# %%
+# Fazendo um gráfico visual para analisar os hospitais
+# Configurar o estilo visual dos gráficos
+sns.set_theme(style="whitegrid")
+
+# ==========================================
+# GRÁFICO 1: Hospital vs Quantidade de Pacientes
+# ==========================================
+# 1. Agrupar os dados para contar os pacientes por hospital
+df_hosp_pacientes = dados_hospital.groupby('id_hospital')['id_paciente'].count().reset_index(name='total_pacientes')
+
+# 2. Criar o gráfico de barras
+plt.figure(figsize=(10, 5))
+sns.barplot(data=df_hosp_pacientes, x='id_hospital', y='total_pacientes', palette='Blues_d')
+plt.title('Total de Pacientes por Hospital', fontsize=14, fontweight='bold')
+plt.xlabel('ID do Hospital', fontsize=12)
+plt.ylabel('Quantidade de Pacientes', fontsize=12)
+plt.xticks(rotation=45)
+plt.tight_layout()
+plt.show()
+
+# %%
+
+import matplotlib.pyplot as plt
+import seaborn as sns
+
+sns.set_theme(style="whitegrid")
+
+# 1. Agrupar, ordenar de forma decrescente e pegar apenas os 15 hospitais com mais pacientes
+df_top_hospitais = (
+    dados_hospital.groupby('id_hospital')['id_paciente']
+    .count()
+    .reset_index(name='total_pacientes')
+    .sort_values(by='total_pacientes', ascending=False)
+    .head(15)
+)
+
+# 2. Criar o gráfico de barras horizontal (melhor para leitura de nomes/IDs)
+plt.figure(figsize=(10, 8))
+sns.barplot(data=df_top_hospitais, y='id_hospital', x='total_pacientes', palette='Blues_r', orient='h')
+plt.title('Top 15 Hospitais com Maior Número de Pacientes', fontsize=14, fontweight='bold')
+plt.xlabel('Quantidade de Pacientes', fontsize=12)
+plt.ylabel('ID do Hospital', fontsize=12)
+plt.tight_layout()
+plt.show()
+# %%
+# 1. Agrupar, ordenar de forma decrescente e pegar apenas os 15 hospitais com mais pacientes
+df_top_hospitais = (
+    dados_hospital.groupby('diagnostico')['id_paciente']
+    .count()
+    .reset_index(name='total_pacientes')
+    .sort_values(by='total_pacientes', ascending=False)
+    .head(15)
+)
+
+# 2. Criar o gráfico de barras horizontal (melhor para leitura de nomes/IDs)
+plt.figure(figsize=(10, 8))
+sns.barplot(data=df_top_hospitais, y='id_hospital', x='total_pacientes', palette='Blues_r', orient='h')
+plt.title('Top 15 Hospitais com Maior Número de Pacientes', fontsize=14, fontweight='bold')
+plt.xlabel('Quantidade de Pacientes', fontsize=12)
+plt.ylabel('ID do Hospital', fontsize=12)
+plt.tight_layout()
+plt.show()
+
+# %%
+
+import matplotlib.pyplot as plt
+import pandas as pd
+
+# 1. Agrupar por diagnóstico, ordenar e pegar os top 15
+df_top_diagnosticos = (
+    dados_hospital.groupby('diagnostico')['id_paciente']
+    .count()
+    .reset_index(name='total_pacientes')
+    .sort_values(by='total_pacientes', ascending=False)
+    .head(15)
+)
+
+# 2. Criar o gráfico correto para diagnósticos
+plt.figure(figsize=(10, 8))
+sns.barplot(data=df_top_diagnosticos, y='diagnostico', x='total_pacientes', palette='Blues_r', orient='h')
+plt.title('Top 15 Diagnósticos Mais Frequentes', fontsize=14, fontweight='bold')
+plt.xlabel('Quantidade de Pacientes', fontsize=12)
+plt.ylabel('Diagnóstico', fontsize=12)
+plt.tight_layout()
+plt.show()
+
+ 
+
+
